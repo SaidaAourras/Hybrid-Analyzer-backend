@@ -1,15 +1,18 @@
-from db.models.user import User
-from utils.hashing import get_hash_password
+from jose import jwt
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-def create_user(user , db):
-    new_user = User(
-        username = user.username,
-        email = user.email,
-        password_hash = get_hash_password(user.password)
-    )
-    
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    
-    return new_user
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+# create token
+def create_token(payload):
+    token = jwt.encode(payload , SECRET_KEY)
+    return token
+
+
+# verify token cridentials is the current user
+def verify_token(token):
+    my_token = token
+    payload = jwt.decode(my_token , SECRET_KEY)
+    return payload
