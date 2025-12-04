@@ -13,6 +13,6 @@ class User(Base):
     password_hash = Column(String)
     createdAt = Column(Date , default= datetime.utcnow)
     
-    analysis_log = relationship("Analysis_logs" , back_populates="owner")
+    analysis_logs = relationship("AnalysisLogs" , back_populates="user")
 
     
