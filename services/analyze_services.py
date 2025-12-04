@@ -31,6 +31,7 @@ def query(payload):
     return response.json()
 
 
+# remarque : l'output de cette fonction donne un tableau des objet classifier par score en ordre decroissant
 
 def classifier_zero_shot(text , labels):
     try:
@@ -42,7 +43,7 @@ def classifier_zero_shot(text , labels):
                 "parameters": {"candidate_labels": labels},
             })
         
-        return output
+        return output[0]
     
     # si le text est vide
     except ValueError as ve:
@@ -55,4 +56,3 @@ def classifier_zero_shot(text , labels):
     # erreur inattendue
     except Exception as e :
         return f'erreur {e}'
-    
