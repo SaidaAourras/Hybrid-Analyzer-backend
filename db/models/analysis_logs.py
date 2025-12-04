@@ -4,8 +4,8 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 
 
-class Analysis_logs(Base):
-    __tablename__ = "analysis_logs"
+class AnalysisLogs(Base):
+    __tablename__ = "AnalysisLogs"
     
     id = Column(Integer , primary_key=True , index=True)
     input_data = Column(Text)
