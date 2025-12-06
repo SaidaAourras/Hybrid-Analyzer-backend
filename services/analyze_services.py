@@ -2,6 +2,8 @@ import os
 import requests
 from google import genai    
 from dotenv import load_dotenv
+from utils.markdown_to_json import text_markdown_json
+from db.models.analysis_logs import AnalysisLogs
 
 load_dotenv()
 
@@ -33,8 +35,7 @@ def query(payload):
 
 
 # remarque : l'output de cette fonction donne un tableau des objet classifier par score en ordre decroissant
-
-def classifier_zero_shot(text , labels):
+def classifier_zero_shot(text):
     try:
         if not text.strip():
             raise ValueError("Le texte ne peut pas être vide.")
@@ -61,10 +62,12 @@ def classifier_zero_shot(text , labels):
 
 
 API_KEY_GEMINI = os.getenv('API_KEY_GEMINI')
-# create prompt
 
-def create_prompt(text , labels):
-    input_data = classifier_zero_shot(text , labels)
+
+# create prompt
+def create_prompt(text):
+    input_data = classifier_zero_shot(text)
+    print(input_data)
     score = input_data['score']
     label = input_data['label']
     
@@ -73,7 +76,7 @@ def create_prompt(text , labels):
                 Le texte fourni appartient à la catégorie : {label}.
                 
                 Tâches :
-                1. Produire un résumé clair, neutre et concis.
+                1. Produire un résumé clair, neutre et concis(1 ligne).
                 2. Identifier le ton général du texte (positif / neutre / négatif).
                 3. Retourner la réponse sous forme de JSON valide avec deux champs : "resume" et "ton".
 
@@ -82,16 +85,15 @@ def create_prompt(text , labels):
 
                 Réponds uniquement en JSON.
                 """
-    return prompt ,score
+    return prompt ,score , label
 
 
 # text = "La ville a inauguré aujourd’hui une nouvelle ligne de tramway destinée à améliorer les déplacements des habitants.Le projet, commencé il y a trois ans, a coûté près de 400 millions d’euros et fait partie d’un plan plus large visant à développer les transports publics et réduire l’usage des voitures."
+# prompt , score = create_prompt(text)
 
 
-# prompt , score = create_prompt(text , labels)
 
 # synthèse contextuelle Gemini
-
 def analyse_with_gemini(prompt):
     try:
         client = genai.Client(api_key=API_KEY_GEMINI)
@@ -100,8 +102,32 @@ def analyse_with_gemini(prompt):
             model="gemini-2.5-flash",
             contents=prompt
         )
-        return response.text
+        
+        text_json = text_markdown_json(response.text)
+        return text_json
     except Exception as e:
         return f'erreur : {e}'
     
-# analyse_with_gemini(prompt)
+# print(analyse_with_gemini(prompt))
+
+
+
+# create a new log
+def create_new_analysis_log(log , user , db):
+    new_log = AnalysisLogs(
+        text = log["text"],
+        score = log["score"] ,
+        category = log["category"],
+        ton = log["ton"],
+        resume = log["resume"],
+        user_id = user.id
+    )
+    
+    db.add(new_log)
+    db.commit()
+    db.refresh(new_log)
+    
+    return new_log
+
+
+    

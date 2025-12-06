@@ -20,7 +20,6 @@ def create_user(user , db):
 
 
 # verify is the user exits in database
-
 def verify_user_is_exists(user , db):
     user_query = db.query(User).filter(User.email == user.email).first()
     print(user_query)
@@ -28,4 +27,7 @@ def verify_user_is_exists(user , db):
         return True
     else:
         return False
+    
+
+
     
