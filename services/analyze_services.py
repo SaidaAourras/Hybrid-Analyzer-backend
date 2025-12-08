@@ -1,9 +1,12 @@
+from utils.markdown_to_json import text_markdown_json
+from db.models.analysis_logs import AnalysisLogs
 import os
 import requests
 from google import genai    
 from dotenv import load_dotenv
 from utils.markdown_to_json import text_markdown_json
 from db.models.analysis_logs import AnalysisLogs
+
 
 load_dotenv()
 
@@ -59,7 +62,7 @@ def classifier_zero_shot(text):
     except Exception as e :
         return f'erreur {e}'
 
-
+print(classifier_zero_shot('Le nouveau iPhone sort demain.'))
 
 API_KEY_GEMINI = os.getenv('API_KEY_GEMINI')
 
