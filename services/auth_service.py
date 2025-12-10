@@ -21,6 +21,7 @@ def create_token(payload):
 # verify token cridentials is the current user
 def verify_token( credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme) , db = Depends(get_db)):
     token = credentials.credentials
+    print(token)
     try:
         payload = jwt.decode(token , SECRET_KEY)
         print(payload)

@@ -5,11 +5,12 @@ def test_classifier_zero_shot(mocker):
     
     mock_post = mocker.patch("services.analyze_services.requests.post")
     
-    mock_response = mocker.Mock()
-    mock_response.json.return_value = [{'label': 'technologie', 'score': 0.92}]
+    # mock_response = mocker.Mock()
+    # mock_response.json.return_value = [{'label': 'technologie', 'score': 0.92}]
     
+    mock_post.return_value.json.return_value = [{'label': 'technologie', 'score': 0.92}]
     
-    mock_post.return_value = mock_response
+    # mock_post.return_value = mock_response
     
     from services.analyze_services import classifier_zero_shot
     
