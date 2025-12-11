@@ -25,6 +25,7 @@ def analyse_text(text : str , current_user = Depends(verify_token) , db: Session
           "ton":resume_context['ton'],
           "resume":resume_context['resume']
      }
+     
      print(result)
      user = db.query(User).filter(User.email == current_user['email']).first()
      print('--------------------------- ' , current_user)

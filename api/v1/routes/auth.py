@@ -1,4 +1,4 @@
-from fastapi import APIRouter , Depends 
+from fastapi import APIRouter , Depends  , HTTPException
 from sqlalchemy.orm import Session
 from ..schemas.user import UserModel , UserRegister
 from ..dependencies import get_db
@@ -35,5 +35,7 @@ def login(user:UserModel , db:Session = Depends(get_db)):
             'success':'you logged successfully',
             'token': token
             }
-    else:
-        return 'invalide email'
+    raise HTTPException(
+        status_code=401,
+        detail="Email ou mot de passe incorrect"
+    )
