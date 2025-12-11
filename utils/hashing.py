@@ -7,3 +7,4 @@ def get_hash_password(password):
 
 def verify_password(plained_pwd , hashed_pwd):
     return password_hash.verify(plained_pwd , hashed_pwd)
+

@@ -24,9 +24,6 @@ def verify_token( credentials: HTTPAuthorizationCredentials = Depends(bearer_sch
     print(token)
     try:
         payload = jwt.decode(token , SECRET_KEY)
-        print(payload)
-        # user = db.query(User).filter(User.username == payload['username']).first()
-        
         return payload
     except JWTError as e:
         return e

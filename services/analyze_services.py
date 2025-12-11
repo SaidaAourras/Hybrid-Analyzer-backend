@@ -70,7 +70,6 @@ API_KEY_GEMINI = os.getenv('API_KEY_GEMINI')
 # create prompt
 def create_prompt(text):
     input_data = classifier_zero_shot(text)
-    print(input_data)
     score = input_data['score']
     label = input_data['label']
     
@@ -89,10 +88,6 @@ def create_prompt(text):
                 Réponds uniquement en JSON.
                 """
     return prompt ,score , label
-
-
-# text = "La ville a inauguré aujourd’hui une nouvelle ligne de tramway destinée à améliorer les déplacements des habitants.Le projet, commencé il y a trois ans, a coûté près de 400 millions d’euros et fait partie d’un plan plus large visant à développer les transports publics et réduire l’usage des voitures."
-# prompt , score = create_prompt(text)
 
 
 
