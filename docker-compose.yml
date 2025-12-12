@@ -1,0 +1,92 @@
+# ----------------------------------------------------------------------
+# RÉSEAUX
+# ----------------------------------------------------------------------
+networks:
+  backend_net:
+    driver: bridge
+
+services:
+
+  # ----------------------------------------------------------------------
+  # 1. Backend (FastAPI)
+  # ----------------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hybrid_analyzer_api
+    restart: unless-stopped
+    networks:
+      - backend_net
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app        # Pour dev ; retirer en prod
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ----------------------------------------------------------------------
+  # 2. Frontend (Next.js)
+  # ----------------------------------------------------------------------
+  frontend:
+    build:
+      context: ../hybrid-analyzer-frontend
+      dockerfile: Dockerfile
+    container_name: hybrid_analyzer_web
+    restart: unless-stopped
+    networks:
+      - backend_net
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:8000
+    volumes:
+      - ./frontend:/app # Pour dev ; retirer en prod
+    depends_on:
+      - backend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ----------------------------------------------------------------------
+  # 3. PostgreSQL
+  # ----------------------------------------------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: hybrid_analyzer_db
+    restart: unless-stopped
+    networks:
+      - backend_net
+    environment:
+      POSTGRES_USER: hybrid_user
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: hybrid_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hybrid_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ----------------------------------------------------------------------
+# VOLUMES
+# ----------------------------------------------------------------------
+volumes:
+  postgres_data:
