@@ -19,7 +19,9 @@ def register(user:UserRegister , db:Session=Depends(get_db)):
     user_exists = verify_user_is_exists(user , db)
     print(user_exists)
     if user_exists:
-        return 'this email already exists'
+        raise HTTPException(
+        detail="Email deja exists"
+    )
     else:
         return create_user(user , db)
 
@@ -39,3 +41,8 @@ def login(user:UserModel , db:Session = Depends(get_db)):
         status_code=401,
         detail="Email ou mot de passe incorrect"
     )
+
+
+@auth_router.post("/logout")
+def logout():
+    return {"message": "OK"}
