@@ -6,10 +6,12 @@ from google import genai
 from dotenv import load_dotenv
 from utils.markdown_to_json import text_markdown_json
 from db.models.analysis_logs import AnalysisLogs
+from utils.logger import get_logger
 
 
 load_dotenv()
 
+logger = get_logger(__name__)
 
 labels = [
   "politique",
@@ -33,36 +35,53 @@ headers = {
 }
     
 def query(payload):
-    response = requests.post(API_URL, headers=headers, json=payload)
-    return response.json()
+    logger.info("HuggingFace request started")
+    
+    try:
+        response = requests.post(API_URL, headers=headers, json=payload , timeout=30)
+        response.raise_for_status()
+        logger.info("HuggingFace request successful")
+        return response.json()
+    
+    except requests.exceptions.RequestException:
+        logger.error("HuggingFace request failed", exc_info=True)
+        return {'erreur':'HuggingFace request failed'}
 
 
 # remarque : l'output de cette fonction donne un tableau des objet classifier par score en ordre decroissant
 def classifier_zero_shot(text):
     try:
         if not text.strip():
+            logger.warning("Empty text received for classification")
             raise ValueError("Le texte ne peut pas être vide.")
+        
+        logger.info("Zero-shot classification started")
+        
         
         output = query({
                 "inputs": text,
                 "parameters": {"candidate_labels": labels},
             })
         
-        return output[0] 
+        result = output[0]
+        
+        logger.info(
+            "Classification completed",
+            extra={"label": result["label"], "score": result["score"]}
+        )
+        return  result
     
     # si le text est vide
     except ValueError as ve:
-        return f'erreur de donnees : {ve}'
-    
-    # erreur de connexion
-    except ConnectionError:
-        return 'erreur de connexion'
+        logger.warning(f"Invalid input: {ve}")
+        return {'erreur':f'Invalid input: {ve}'}
     
     # erreur inattendue
-    except Exception as e :
-        return f'erreur {e}'
+    except Exception as e:
+        logger.error("Unexpected error in zero-shot classification", exc_info=True)
+        return {'erreur':f'Unexpected error in zero-shot classification {e}'}
 
-print(classifier_zero_shot('Le nouveau iPhone sort demain.'))
+# print(classifier_zero_shot('Le nouveau iPhone sort demain.'))
 
 API_KEY_GEMINI = os.getenv('API_KEY_GEMINI')
 
@@ -93,6 +112,8 @@ def create_prompt(text):
 
 # synthèse contextuelle Gemini
 def analyse_with_gemini(prompt):
+    logger.info("Gemini analysis started")
+    
     try:
         client = genai.Client(api_key=API_KEY_GEMINI)
 
@@ -101,10 +122,13 @@ def analyse_with_gemini(prompt):
             contents=prompt
         )
         
+        logger.info("Gemini response received")
+        
         text_json = text_markdown_json(response.text)
         return text_json
     except Exception as e:
-        return f'erreur : {e}'
+        logger.error("Gemini analysis failed", exc_info=True)
+        return {'erreur':f'Gemini analysis failed {e}'}
     
 # print(analyse_with_gemini(prompt))
 
