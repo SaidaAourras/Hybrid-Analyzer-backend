@@ -1,0 +1,42 @@
+2025-12-14 22:59:13,030 | INFO | services.analyze_services | Zero-shot classification started
+2025-12-14 22:59:13,032 | INFO | services.analyze_services | HuggingFace request started
+2025-12-14 22:59:16,707 | INFO | services.analyze_services | HuggingFace request successful
+2025-12-14 22:59:16,717 | INFO | services.analyze_services | Classification completed
+2025-12-14 22:59:16,719 | INFO | services.analyze_services | Gemini analysis started
+2025-12-14 22:59:19,567 | INFO | google_genai.models | AFC is enabled with max remote calls: 10.
+2025-12-14 22:59:23,700 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2025-12-14 22:59:23,713 | INFO | services.analyze_services | Gemini response received
+2025-12-14 22:59:31,740 | INFO | services.analyze_services | Zero-shot classification started
+2025-12-14 22:59:31,740 | INFO | services.analyze_services | HuggingFace request started
+2025-12-14 22:59:37,415 | INFO | services.analyze_services | HuggingFace request successful
+2025-12-14 22:59:37,419 | INFO | services.analyze_services | Classification completed
+2025-12-14 22:59:37,419 | INFO | services.analyze_services | Gemini analysis started
+2025-12-14 22:59:39,915 | INFO | google_genai.models | AFC is enabled with max remote calls: 10.
+2025-12-14 22:59:43,316 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2025-12-14 22:59:43,337 | INFO | services.analyze_services | Gemini response received
+2025-12-14 22:59:58,175 | WARNING | services.analyze_services | Empty text received for classification
+2025-12-14 22:59:58,182 | WARNING | services.analyze_services | Invalid input: Le texte ne peut pas être vide.
+2025-12-14 23:03:28,173 | WARNING | services.analyze_services | Empty text received for classification
+2025-12-14 23:03:28,174 | WARNING | services.analyze_services | Invalid input: Le texte ne peut pas être vide.
+2025-12-14 23:03:51,206 | WARNING | services.analyze_services | Empty text received for classification
+2025-12-14 23:03:51,218 | WARNING | services.analyze_services | Invalid input: Le texte ne peut pas être vide.
+2025-12-14 23:04:57,371 | WARNING | services.analyze_services | Empty text received for classification
+2025-12-14 23:04:57,372 | WARNING | services.analyze_services | Invalid input: Le texte ne peut pas être vide.
+2025-12-14 23:05:54,610 | WARNING | services.analyze_services | Empty text received for classification
+2025-12-14 23:05:54,612 | WARNING | services.analyze_services | Invalid input: Le texte ne peut pas être vide.
+2025-12-14 23:08:52,442 | INFO | services.analyze_services | Zero-shot classification started
+2025-12-14 23:08:52,445 | INFO | services.analyze_services | HuggingFace request started
+2025-12-14 23:08:59,846 | INFO | services.analyze_services | HuggingFace request successful
+2025-12-14 23:08:59,861 | INFO | services.analyze_services | Classification completed
+2025-12-14 23:08:59,864 | INFO | services.analyze_services | Gemini analysis started
+2025-12-14 23:09:03,969 | INFO | google_genai.models | AFC is enabled with max remote calls: 10.
+2025-12-14 23:09:06,196 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2025-12-14 23:09:06,221 | INFO | services.analyze_services | Gemini response received
+2025-12-14 23:09:50,687 | INFO | services.analyze_services | Zero-shot classification started
+2025-12-14 23:09:50,688 | INFO | services.analyze_services | HuggingFace request started
+2025-12-14 23:09:53,922 | INFO | services.analyze_services | HuggingFace request successful
+2025-12-14 23:09:53,927 | INFO | services.analyze_services | Classification completed
+2025-12-14 23:09:53,927 | INFO | services.analyze_services | Gemini analysis started
+2025-12-14 23:09:56,993 | INFO | google_genai.models | AFC is enabled with max remote calls: 10.
+2025-12-14 23:09:58,624 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2025-12-14 23:09:58,637 | INFO | services.analyze_services | Gemini response received
