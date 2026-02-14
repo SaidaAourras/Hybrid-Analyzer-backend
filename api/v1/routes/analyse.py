@@ -26,18 +26,14 @@ def analyse_text(text : str , current_user = Depends(verify_token) , db: Session
           "resume":resume_context['resume']
      }
      
-     print(result)
      user = db.query(User).filter(User.email == current_user['email']).first()
-     print('--------------------------- ' , current_user)
+    
      if not user:
          raise HTTPException(status_code=404, detail="User not found")
-    
-     print(current_user['password'], user.password_hash)
      
      if not verify_password(current_user['password'], user.password_hash):
           raise HTTPException(status_code=401, detail="Invalid credentials")
 
-     print(user)
      new_log = create_new_analysis_log(result , user , db)
      
      return new_log
