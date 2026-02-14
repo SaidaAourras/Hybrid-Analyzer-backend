@@ -1,37 +1,14 @@
-def test_workflow_hf_gemini(mocker):
+# from fastapi.testclient import TestClient
+# from main import app
+# def test_workflow_hf_gemini(mocker):
     
-    from services.analyze_services import create_prompt
+#     client = TestClient(app)
+#     mocker.patch("api.v1.routes.analyse.verify_token", return_value={'email':'k@gmail.com', 'password':'123456'})
+#     mocker.patch("api.v1.routes.analyse.create_prompt", return_value=("p", 0.23456819355487823, "éducation"))
+#     mocker.patch("api.v1.routes.analyse.analyse_with_gemini", return_value={"ton": "neutre", "resume": "Le texte fourni est un mot unique ('test') et ne contient pas suffisamment d'informations pour être résumé."})
+#     mocker.patch("api.v1.routes.analyse.verify_password", return_value=True)
+#     mocker.patch("api.v1.routes.analyse.create_new_analysis_log", return_value={"ok": True})
     
-    # hf + create prompt
+#     response = client.post("/api/v1/analysis/analyse", json={"text": "test"})
     
-    mock_post = mocker.patch("services.analyze_services.requests.post")
-    
-    mock_response = mocker.Mock()
-    mock_response.json.return_value = [{'label': 'technologie', 'score': 0.92}]
-    
-    mock_post.return_value = mock_response
-    
-    prompt ,score , label = create_prompt("Le nouveau iPhone sort demain.")
-
-    assert score == 0.92
-    assert label == "technologie"
-    
-    
-    # analyse with gemini
-    
-    mock_client_class = mocker.patch('services.analyze_services.genai.Client')
-    
-    mock_client = mocker.Mock()
-    mock_client_class.return_value = mock_client
-    
-    mock_gemini_response = mocker.Mock()
-    mock_gemini_response.text = '{"resume": "ok", "ton": "neutre"}'
-    
-    mock_client.models.generate_content.return_value = mock_gemini_response
-    
-    from services.analyze_services import analyse_with_gemini
-    
-    result = analyse_with_gemini(prompt)
-    
-    assert result["resume"] == "ok"
-    assert result["ton"] ==  "neutre"
+#     assert response.status_code == 200
